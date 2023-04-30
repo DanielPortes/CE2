@@ -1,15 +1,24 @@
+import numpy as np
 from platypus import NSGAII, Problem, Real
-import cec2017.functions as functions
+from cec2017 import functions
 
-problem = Problem(1, 1)
-problem.types[:] = Real(-10, 10)
-problem.function = functions.f3
-problem.directions = -1
+
+def cec2017_problem(x):
+    x = np.array(x).reshape(2, 10)
+    f = np.empty(len(x))
+    i = 2
+    # refatorar esse for, essa variavel 'a', acho q era pra ser um vetor
+    for xi in enumerate(x):
+        a = functions.all_functions[i](x)
+    return a
+
+
+problem = Problem(20, 2)
+problem.types[:] = Real(-100, 100)
+problem.function = cec2017_problem
+problem.directions[:] = Problem.MINIMIZE
 
 algorithm = NSGAII(problem)
 algorithm.run(10000)
 
-print(algorithm.result[0].objectives[0])
-
-
-
+print("Solução ótima:", algorithm.result[0].variables, "Valor da função objetivo:", algorithm.result[0].objectives[0])
