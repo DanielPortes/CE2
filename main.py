@@ -1,9 +1,8 @@
 import numpy as np
-from platypus import NSGAII, Problem, Real, Hypervolume, calculate, display, experiment
+from platypus import *
 from cec2017 import functions
 
-num_runs = 1
-budget_multiplier = 10000
+
 
 def fun(x):
     x = np.array(x).reshape(2, 10)
@@ -13,116 +12,39 @@ def fun(x):
         a = functions.all_functions[i](x)
     return a
 
+
 problem = Problem(20, 2)
 problem.types[:] = Real(-100, 100)
 problem.function = fun
-#problem.function = functions.all_functions[2]
 problem.directions[:] = Problem.MINIMIZE
 algorithm = NSGAII
 
-# problem = [DTLZ2(3)]
-# algorithm = [NSGAII, (NSGAIII, {"divisions_outer":12})]
+num_runs = 1
+budget_multiplier = 10
+n_runs = 1
+results = []
+# solutions = []
+solutions_list = []
 
-results = experiment(algorithm, problem, nfe=(1 * budget_multiplier))
-#print(results)
+for i in range(n_runs):
+    algorithm = NSGAII
+    value = experiment(algorithm, problem, nfe=(1 * budget_multiplier), seeds=1)
+    # print(value.get("NSGAII").get("Problem")[0][0])
+    solutions_list.append(value.get("NSGAII").get("Problem")[0][0].variables)
 
-# Análise dos resultados para essa dimensão
-hyp = Hypervolume(minimum=[0, 0], maximum=[1, 1])
-hyp_result = calculate(results, hyp)
-display(hyp_result, ndigits=3)
+lista = []
+for i in range(len(solutions_list)):
+    lista = solutions_list[i]
+print(lista)
 
-
-# import numpy as np
-# from platypus import NSGAII, Problem, Real, Hypervolume, calculate,display
-# from cec2017 import functions
-
-# num_runs = 1
-# budget_multiplier = 10000
-
-# def fun(x):
-#     x = np.array(x).reshape(2, 10)
-#     f = np.empty(len(x))
-#     i = 2
-#     for xi in enumerate(x):
-#         a = functions.all_functions[i](x)
-#     return a
-
-# for dimension in range(1, 2):
-#     problem = Problem(20, 2)
-#     problem.types[:] = Real(-100, 100)
-#     problem.function = fun
-#     problem.directions[:] = Problem.MINIMIZE
-
-#     results = []
-#     for i in range(num_runs):
-#         budget = dimension * budget_multiplier
-#         algorithm = NSGAII(problem, budget=budget)
-#         algorithm.run(budget)
-#         results.append(algorithm.result)
-
-#     # Análise dos resultados para essa dimensão
-#     hyp = Hypervolume(minimum=[0, 0], maximum=[1, 1])
-#     hyp_result = calculate(results, hyp)
-#     display(hyp_result, ndigits=2)
+# mean and std from lista
+mean = np.mean(lista, axis=0)
+std = np.std(lista, axis=0)
+print(mean)
+print(std)
 
 
 
-# import numpy as np
-# from platypus import NSGAII, Problem, Real
-# from cec2017 import functions
-
-# num_runs = 51
-# budget_multiplier = 10000
-
-# def fun(x):
-#     x = np.array(x).reshape(2, 10)
-#     f = np.empty(len(x))
-#     i = 2
-#     for xi in enumerate(x):
-#         a = functions.all_functions[i](x)
-#     return a
-
-# for dimension in range(1, 2):
-#     problem = Problem(dimension * 20, 2)
-#     problem.types[:] = Real(-100, 100)
-#     problem.function = fun
-#     problem.directions[:] = Problem.MINIMIZE
-
-#     results = []
-#     for i in range(num_runs):
-#         budget = dimension * budget_multiplier
-#         algorithm = NSGAII(problem, budget=budget)
-#         algorithm.run(budget)
-#         results.append(algorithm.result)
-
-#     # Análise dos resultados para essa dimensão
-#     # ...
-
-#     print("Dimensão:", dimension)
 
 
 
-# import numpy as np
-# from platypus import NSGAII, Problem, Real
-# from cec2017 import functions
-
-
-# def fun(x):
-#     x = np.array(x).reshape(2, 10)
-#     f = np.empty(len(x))
-#     i = 2
-#     # refatorar esse for, essa variavel 'a', acho q era pra ser um vetor
-#     for xi in enumerate(x):
-#         a = functions.all_functions[i](x)
-#     return a
-
-
-# problem = Problem(20, 2)
-# problem.types[:] = Real(-100, 100)
-# problem.function = fun
-# problem.directions[:] = Problem.MINIMIZE
-
-# algorithm = NSGAII(problem)
-# algorithm.run(10000)
-
-# print("Solução:", algorithm.result[0].variables, "Valor da função objetivo:", algorithm.result[0].objectives[0])
