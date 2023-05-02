@@ -8,7 +8,7 @@ vetorY = []
 def fun(x):
     x = np.array(x).reshape(2, 10)
     f = np.empty(len(x))
-    i = 3
+    i = 4
     for xi in enumerate(x):
         a = functions.all_functions[i](x)
     return a
@@ -16,7 +16,7 @@ def fun(x):
 def fun2(x):
     x = np.array(x).reshape(2, 2)
     f = np.empty(len(x))
-    i = 2
+    i = 4
     for xi in enumerate(x):
         a = functions.all_functions[i](x)
     return a
@@ -27,8 +27,8 @@ problem.function = fun
 problem.directions[:] = Problem.MINIMIZE
 algorithm = NSGAII
 
-budget_multiplier = 10
-n_runs = 1
+budget_multiplier = 10000
+n_runs = 51
 results = []
 solutions_list = []
 dim = 10
@@ -60,6 +60,7 @@ for i in range(len(lista)):
 mean = np.mean(lista, axis=0)
 median = np.median(lista, axis=0)
 std = np.std(lista, axis=0)
+print("D = 10")
 print("media: ",mean)
 print("mediana: ",median)
 print("desvio padrao: ",std)
@@ -74,8 +75,8 @@ problem.function = fun2
 problem.directions[:] = Problem.MINIMIZE
 algorithm = NSGAII
 
-budget_multiplier = 10
-n_runs = 1
+budget_multiplier = 10000
+n_runs = 51
 results = []
 solutions_list = []
 dim = 2
@@ -106,6 +107,7 @@ for i in range(len(lista)):
 mean2 = np.mean(lista, axis=0)
 median2 = np.median(lista, axis=0)
 std2 = np.std(lista, axis=0)
+print("D = 2")
 print("media: ",mean2)
 print("mediana: ",median2)
 print("desvio padrao: ",std2)
