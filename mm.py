@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 
 functions_list = [2, 3, 4, 5, 6, 7, 8]  # functions to be tested
 f_index = 0
-dims = [10, 2]
+dims = [10]
 d_index = 0
-budget_multiplier = 1000 # 10000
-n_runs = 10 # 51
+budget_multiplier = 100 # 10000
+n_runs = 2 # 51
 
 def alternate_dimensions():
     global d_index
@@ -39,27 +39,23 @@ if __name__ == '__main__':
 
             solutions_list = []
             fx_values = []
+            f = functions.all_functions[functions_list[f_index]] # encontrando o endereco da funcao
             for i in range(n_runs):
                 value = experiment(algorithm, problem, nfe=(dims[d_index] * budget_multiplier), seeds=1)
                 solutions_list.append(value.get("NSGAII").get("Problem")[0][i].variables)
-                f = functions.all_functions[functions_list[f_index]] # encontrando o endereco da funcao
                 m = np.array(solutions_list[i]).reshape(5, -1) # transformando a lista 1x5 em matriz 5x1, apenas um teste
                 fx_values.append(f(m)) # chamando funcao f com a matriz m
 
+            maior = max(max(sublist) for sublist in fx_values)
+            menor = min(min(sublist) for sublist in fx_values)
 
-
-
-            maior = max(fx_values)
-            menor = min(fx_values)
-
-            # mean and std from lista
-            mean = np.mean(fx_values, axis=0)
-            median = np.median(fx_values, axis=0)
-            std = np.std(fx_values, axis=0)
-            print("D =" + str(dims[d_index]))
-            print("media: ", mean)
-            print("mediana: ", median)
-            print("desvio padrao: ", std)
+            # mean = np.mean(fx_values, axis=0)
+            # median = np.median(fx_values, axis=0)
+            # std = np.std(fx_values, axis=0)
+            # print("D =" + str(dims[d_index]))
+            # print("media: ", mean)
+            # print("mediana: ", median)
+            # print("desvio padrao: ", std)
             print("maior: ", maior)
             print("menor: ", menor)
 
